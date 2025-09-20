@@ -28,7 +28,8 @@ char c = 0;
 char pinArray[4];
 char selectetPin = 0;
 
-enum OperationMode : byte {
+enum OperationMode : byte
+{
   modeBalance = 0,
   modeLedCommand = 1,
   modeVoltBandwithInput = 2,
@@ -66,11 +67,11 @@ void setup()
 
 #if defined(ARDUINO_AVR_UNO)
   // Uno pin assignments
-  serialPlusOled("ARDUINO_AVR_UNO");
+  serialPlusOled((char *)"ARDUINO_AVR_UNO");
 
 #elif defined(ARDUINO_AVR_NANO)
   // NANO
-  serialPlusOled("ARDUINO_AVR_NANO");
+  serialPlusOled((char *)"ARDUINO_AVR_NANO");
 
   pinArray[0] = LED_BUILTIN;
   pinArray[1] = PD5;
@@ -81,7 +82,7 @@ void setup()
 
 #elif defined(ARDUINO_ESP8266_NODEMCU)
   // ESP8266_NODEMCU
-  serialPlusOled("ESP8266_NODEMCU");
+  serialPlusOled((char *)"ESP8266_NODEMCU");
 
   pinArray[0] = LED_BUILTIN;
   pinArray[1] = D5;
@@ -106,44 +107,50 @@ void setup()
   help();
   Serial.println("###############################################################");
 
-  oled.print("Boot finished!!!");
+  serialPlusOledDelayed("Boot finished!!!");
 }
 
 void loop()
 {
   // if there's any serial available, read it:
-  while (Serial.available() > 0)
+  if (Serial.available() > 0)
   {
     // look wait on input
     c = Serial.read();
 
-    if (c == '^')
+    if (c == '#')
     {
       operationMode = modeBalance;
-      Serial.println("^ --> modeBalance");
+      serialPlusOledDelayed((char *)"@ = switch to Balance Mode (default)");
+      Serial.println("# --> modeBalance");
     }
 
     else if (c == '@')
     {
       operationMode = modeLedCommand;
-      Serial.println("@ send character to OLED without interpretating until \\");
+      serialPlusOledDelayed((char *)"# = switch to Out Test");
+      Serial.println("@ --> modeLedCommand");
     }
 
     else if (c == 'h')
     {
       help();
     }
+    else if (operationMode == modeLedCommand)
+    {
+      //pass command to led handler
+      ledCommand(c);
+    }
 
     else
     {
-      if (operationMode == modeLedCommand)
-      {
-        ledCommand(c);
-      }
-
-      else if (operationMode == modeBalance)
-      {
-      }
+    }
+  }
+  else
+  {
+    // no serial input available
+    if (operationMode == modeBalance)
+    {
     }
   }
 }
