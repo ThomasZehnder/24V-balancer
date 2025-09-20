@@ -85,7 +85,7 @@ void setup()
 
 #elif defined(ARDUINO_ESP8266_ESP13)
   // ESP8266_ESP13 not tested
-  Serial.println("ARDUINO_ESP8266_ESP13");
+  #error ESP8266_ESP13 not tested Stop compilation.
 
 #else
 #error Unsupported board selection. Stop compilation.
