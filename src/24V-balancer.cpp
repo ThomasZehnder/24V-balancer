@@ -41,10 +41,9 @@ OperationMode operationMode = modeBalance; // default mode
 
 bool valKey[2];
 bool valKey_old[2];
-int pinKey[2];
 
 int bandwithVoltage = 200; // default 200mV
-int cycleTime = 10; // default 10s
+int cycleTime = 10;        // default 10s
 
 void setup()
 {
@@ -66,8 +65,6 @@ void setup()
   pinArray[1] = 5;
   pinArray[2] = 6;
   pinArray[3] = 7;
-  pinKey[0] = 11; // D11;
-  pinKey[1] = 12; // D12;
 
 #if defined(ARDUINO_AVR_UNO)
   // Uno pin assignments
@@ -81,8 +78,6 @@ void setup()
   pinArray[1] = PD5;
   pinArray[2] = PD6;
   pinArray[3] = PD7;
-  pinKey[0] = 11; // D11;
-  pinKey[1] = 12; // D12;
 
 #elif defined(ARDUINO_ESP8266_NODEMCU)
   // ESP8266_NODEMCU
@@ -92,8 +87,6 @@ void setup()
   pinArray[1] = D5;
   pinArray[2] = D6;
   pinArray[3] = D7;
-  pinKey[0] = D11;
-  pinKey[1] = D12;
 
 #elif defined(ARDUINO_ESP8266_ESP13)
 // ESP8266_ESP13 not tested
