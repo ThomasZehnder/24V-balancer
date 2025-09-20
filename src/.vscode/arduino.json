@@ -1,0 +1,18 @@
+{
+    "sketch": "bus-balancer-24-24.cpp",
+    "port": "COM4",
+    "board": "arduino:avr:nano",
+    "configuration": "cpu=atmega328old",
+    "programmer": "AVRISP mkII",
+    "output": "./build",
+    "buildPreferences": [
+        [
+            "build.extra_flags",
+            "-DDEBUG=false"
+        ],
+        [
+            "compiler.cpp.extra_flags",
+            "-DDEBUG=false"
+        ]
+    ]
+}
