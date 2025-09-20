@@ -35,38 +35,3 @@ void serialPlusOledDelayed(char *s)
 }
 
 
-void displayShowCommand(char c)
-{
-  if (c != '\n') //avoid unnecessary line for LF
-  {
-    oled.print("Command: ");
-    oled.print((int)c);
-    oled.print(" > ");
-    oled.println(c);
-  }
-}
-
-bool displaySetting(char  c)
-{
-  if (c == '#')
-  {
-    oled.setFont(fixed_bold10x15);
-    return true;
-  }
-  else if (c == '|')
-  {
-    oled.setFont(System5x7);
-    return true;
-  }
-  else if (c == '&')
-  {
-    oled.clear();
-    return true;
-  }  
-  else if (c == '\\')
-  {
-    oled.println("");
-    return true;
-  }
-  return false;
-}

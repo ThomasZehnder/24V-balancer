@@ -15,8 +15,5 @@ void displaySetup(void);
 void serialPlusOled(char *s);
 void serialPlusOledDelayed(char *s);
 
-void displayShowCommand(char  c);
-
-bool displaySetting(char  c);
 
 #endif //serial_display_h

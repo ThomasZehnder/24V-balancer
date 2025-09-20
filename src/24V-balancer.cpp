@@ -20,7 +20,6 @@
 */
 
 #include "serial-help.hpp"
-#include "serial-key.hpp"
 #include "serial-display.hpp"
 #include "serial-led.hpp"
 
@@ -95,8 +94,6 @@ void setup()
   // initialize leds
   ledInit();
 
-  // initialize keys
-  keyInit();
 
   //INTRO Help (also accessable with \h)
   Serial.println("###############################################################");
@@ -108,8 +105,6 @@ void setup()
 
 void loop()
 {
-  keyEdgeDetect(serialToOledOn);
-
   // if there's any serial available, read it:
   while (Serial.available() > 0)
   {
@@ -129,10 +124,7 @@ void loop()
       Serial.println("@ send character to OLED without interpretating until \\");
     }
 
-    else if (displaySetting(c))
-    {
-      // if char is consumed return Value is true
-    }
+
 
     else if (serialToOledOn)
     {
@@ -141,8 +133,6 @@ void loop()
 
     else
     {
-
-      displayShowCommand(c);
 
       if (c == 'h')
       {
