@@ -8,7 +8,7 @@
   f = flash sequence 10 timef
 
 
-  Arduino Nano 
+  Arduino Nano
     Old Boot loader !!!
    I2C Bus:
    SDA = A4
@@ -28,7 +28,14 @@ char c = 0;
 char pinArray[4];
 char selectetPin = 0;
 
-bool serialToOledOn = false;
+enum OperationMode : byte {
+  modeBalance = 0,
+  modeLedCommand = 1,
+  modeVoltBandwithInput = 2,
+  modeCycleTime
+};
+
+OperationMode operationMode = modeBalance; // default mode
 
 bool valKey[2];
 bool valKey_old[2];
@@ -49,13 +56,13 @@ void setup()
   Serial.print(" / ");
   Serial.println(__TIME__);
 
-  //Default settings IO mapping
+  // Default settings IO mapping
   pinArray[0] = LED_BUILTIN;
   pinArray[1] = 5;
   pinArray[2] = 6;
   pinArray[3] = 7;
-  pinKey[0] = 11; //D11;
-  pinKey[1] = 12; //D12;
+  pinKey[0] = 11; // D11;
+  pinKey[1] = 12; // D12;
 
 #if defined(ARDUINO_AVR_UNO)
   // Uno pin assignments
@@ -69,8 +76,8 @@ void setup()
   pinArray[1] = PD5;
   pinArray[2] = PD6;
   pinArray[3] = PD7;
-  pinKey[0] = 11; //D11;
-  pinKey[1] = 12; //D12;
+  pinKey[0] = 11; // D11;
+  pinKey[1] = 12; // D12;
 
 #elif defined(ARDUINO_ESP8266_NODEMCU)
   // ESP8266_NODEMCU
@@ -84,8 +91,8 @@ void setup()
   pinKey[1] = D12;
 
 #elif defined(ARDUINO_ESP8266_ESP13)
-  // ESP8266_ESP13 not tested
-  #error ESP8266_ESP13 not tested Stop compilation.
+// ESP8266_ESP13 not tested
+#error ESP8266_ESP13 not tested Stop compilation.
 
 #else
 #error Unsupported board selection. Stop compilation.
@@ -94,8 +101,7 @@ void setup()
   // initialize leds
   ledInit();
 
-
-  //INTRO Help (also accessable with \h)
+  // INTRO Help (also accessable with \h)
   Serial.println("###############################################################");
   help();
   Serial.println("###############################################################");
@@ -113,34 +119,30 @@ void loop()
 
     if (c == '^')
     {
-      serialToOledOn = false;
-      Serial.println("@ send off to OLED");
-      oled.setFont(System5x7);
+      operationMode = modeBalance;
+      Serial.println("^ --> modeBalance");
     }
 
     else if (c == '@')
     {
-      serialToOledOn = true;
+      operationMode = modeLedCommand;
       Serial.println("@ send character to OLED without interpretating until \\");
     }
 
-
-
-    else if (serialToOledOn)
+    else if (c == 'h')
     {
-      oled.print(c);
+      help();
     }
 
     else
     {
-
-      if (c == 'h')
-      {
-        help();
-      }
-      else
+      if (operationMode == modeLedCommand)
       {
         ledCommand(c);
+      }
+
+      else if (operationMode == modeBalance)
+      {
       }
     }
   }
