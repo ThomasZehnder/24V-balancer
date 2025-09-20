@@ -22,6 +22,7 @@
 #include "serial-help.hpp"
 #include "serial-display.hpp"
 #include "serial-led.hpp"
+#include "Arduino.h"
 
 char c = 0;
 
@@ -41,6 +42,9 @@ OperationMode operationMode = modeBalance; // default mode
 bool valKey[2];
 bool valKey_old[2];
 int pinKey[2];
+
+int bandwithVoltage = 200; // default 200mV
+int cycleTime = 10; // default 10s
 
 void setup()
 {
@@ -107,8 +111,11 @@ void setup()
   help();
   Serial.println("###############################################################");
 
-  serialPlusOledDelayed("Boot finished!!!");
+  serialPlusOledDelayed((char *)"Boot finished!!!");
 }
+
+void setBandwithVoltage(char c);
+void setCycleTime(char c);
 
 void loop()
 {
@@ -131,17 +138,39 @@ void loop()
       serialPlusOledDelayed((char *)"# = switch to Out Test");
       Serial.println("@ --> modeLedCommand");
     }
+    else if (c == 'b')
+    {
+      operationMode = modeVoltBandwithInput;
+      serialPlusOledDelayed((char *)"b = new Volt Bandwith Input");
+      Serial.println("@ --> modeVoltBandwithInput");
+      bandwithVoltage = 0;
+    }
+    else if (c == 'c')
+    {
+      operationMode = modeCycleTime;
+      serialPlusOledDelayed((char *)"c = new Cycle Time Input");
+      Serial.println("c --> modeCycleTime");
+      cycleTime = 0;
+    }
 
     else if (c == 'h')
     {
       help();
     }
+
     else if (operationMode == modeLedCommand)
     {
-      //pass command to led handler
+      // pass command to led handler
       ledCommand(c);
     }
-
+    else if (operationMode == modeCycleTime)
+    {
+      setCycleTime(c);
+    }
+    else if (operationMode == modeVoltBandwithInput)
+    {
+      setBandwithVoltage(c);
+    }
     else
     {
     }
@@ -152,5 +181,59 @@ void loop()
     if (operationMode == modeBalance)
     {
     }
+  }
+}
+
+void setBandwithVoltage(char c)
+{
+  if (c >= '0' && c <= '9')
+  {
+    bandwithVoltage = bandwithVoltage * 10 + (c - '0');
+    if (bandwithVoltage > 999)
+    {
+      bandwithVoltage = 999;
+      serialPlusOledDelayed((char *)"Max 999 mV");
+    }
+    char buf[30];
+    sprintf(buf, "Bandwith: %d mV", bandwithVoltage);
+    serialPlusOledDelayed(buf);
+  }
+  else if (c == '\n' || c == '\r')
+  {
+    char buf[30];
+    sprintf(buf, "Bandwith new: %d mV", bandwithVoltage);
+    serialPlusOledDelayed(buf);
+    operationMode = modeBalance;
+  }
+  else
+  {
+    serialPlusOledDelayed((char *)"Invalid input - only 0..9 or <Enter>");
+  }
+}
+
+void setCycleTime(char c)
+{
+  if (c >= '0' && c <= '9')
+  {
+    cycleTime = cycleTime * 10 + (c - '0');
+    if (cycleTime > 60)
+    {
+      cycleTime = 60;
+      serialPlusOledDelayed((char *)"Max 60 sec");
+    }
+    char buf[30];
+    sprintf(buf, "Cycle Time: %d s", cycleTime);
+    serialPlusOledDelayed(buf);
+  }
+  else if (c == '\n' || c == '\r')
+  {
+    char buf[30];
+    sprintf(buf, "Cycle Time new: %d s", cycleTime);
+    serialPlusOledDelayed(buf);
+    operationMode = modeBalance;
+  }
+  else
+  {
+    serialPlusOledDelayed((char *)"Invalid input - only 0..9 or <Enter>");
   }
 }
