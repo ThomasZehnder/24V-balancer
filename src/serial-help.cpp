@@ -1,8 +1,7 @@
 #include "Arduino.h"
 #include "serial-display.hpp"
-
-extern int cycleTime;
-extern int bandwithVoltage; 
+#include "24V-balancer.hpp"
+#include "serial-help.hpp"
 
 void help()
 {
@@ -29,4 +28,23 @@ void help()
   serialPlusOled(buf);
   sprintf(buf, "Bandwith new: %d mV", bandwithVoltage);
   serialPlusOledDelayed(buf);
+}
+
+void showMode(void){
+  if (operationMode == modeBalance)
+  {
+    serialPlusOledDelayed((char *)"@ = Balance Mode (default)");
+  }
+  else if (operationMode == modeLedCommand)
+  {
+    serialPlusOledDelayed((char *)"# = Out Test");
+  }
+  else if (operationMode == modeVoltBandwithInput)
+  {
+    serialPlusOledDelayed((char *)"b = Input Bandwith Voltage");
+  }
+  else if (operationMode == modeCycleTime)
+  {
+    serialPlusOledDelayed((char *)"c = Input Cycle Time");
+  }
 }

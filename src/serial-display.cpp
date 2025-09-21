@@ -18,7 +18,6 @@ void displaySetup(void) {
   oled.println(__DATE__);
   oled.print(" / ");
   oled.println(__TIME__);
-  oled.setFont(System5x7);
   delay(2000);
 }
 

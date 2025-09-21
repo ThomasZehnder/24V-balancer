@@ -24,23 +24,18 @@
 #include "serial-led.hpp"
 #include "Arduino.h"
 
+#include "24V-balancer.hpp"
+
 char c = 0;
 
 char pinArray[4];
 char selectetPin = 0;
 
-enum OperationMode : byte
-{
-  modeBalance = 0,
-  modeLedCommand = 1,
-  modeVoltBandwithInput = 2,
-  modeCycleTime
-};
-
-OperationMode operationMode = modeBalance; // default mode
-
 bool valKey[2];
 bool valKey_old[2];
+
+
+OperationMode operationMode = modeBalance; // default mode
 
 int bandwithVoltage = 200; // default 200mV
 int cycleTime = 10;        // default 10s
