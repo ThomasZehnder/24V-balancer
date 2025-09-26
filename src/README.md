@@ -32,27 +32,19 @@ UART Settings: 115200 Baud, SERIAL_8N1 (the default)
 
 
 ## Display Commands
-To access the display to send texts to the display start with '@', this will forward all characters to the display.  
-With '#' and '|' you can change between small an big font.  
-'&' will clear the display.  
-To switch back to control the led use '^'.   
+To switch to balancer mode use '@' (default)
+With '#' you can change to force the aouputs or leds
 
-    ^ = switch to led command
+    # = switch to led command
     @ = switch to oled output
-    # = big font
-    | = small font
-    & = clear display
-    \ = new line
     
-
-
   
 # Wiring
 ## led's
     Led0 = BUILD IN LED
-    Led1 = D5 --> 
-    Led2 = D6
-    Led3 = D7
+    Led1 = D5 --> select battery 1 ore 2
+    Led2 = D6 --> switch on load to reduce the voltage of selected battery
+    Led3 = D7 --> not used
 
 ## key's not used
     Key0 = 11; //D11;
@@ -69,7 +61,11 @@ To switch back to control the led use '^'.
     SDA = A4
     SCL = A5
 
+### Analog in
 
+    Battery Mesasure = A0 
+
+    Resistor 1k/2k --> 15V --> 5V
 
 
 # TIPS for beginners

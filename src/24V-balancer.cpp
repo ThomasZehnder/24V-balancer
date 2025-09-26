@@ -113,18 +113,18 @@ void loop()
     // look wait on input
     c = Serial.read();
 
-    if (c == '#')
+    if (c == '@')
     {
       operationMode = modeBalance;
       serialPlusOledDelayed((char *)"@ = switch to Balance Mode (default)");
-      Serial.println("# --> modeBalance");
+      Serial.println("@ --> modeBalance");
     }
 
-    else if (c == '@')
+    else if (c == '#')
     {
       operationMode = modeLedCommand;
       serialPlusOledDelayed((char *)"# = switch to Out Test");
-      Serial.println("@ --> modeLedCommand");
+      Serial.println("# --> modeLedCommand");
     }
     else if (c == 'b')
     {
@@ -161,6 +161,9 @@ void loop()
     }
     else
     {
+      serialPlusOledDelayed((char *)"not valid key");
+      Serial.println("character: " + String(c) + " not valid in thes");
+      serialPlusOledDelayed((char *)"use h for help");
     }
   }
   else
