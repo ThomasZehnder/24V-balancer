@@ -39,7 +39,9 @@ bool valKey_old[2];
 OperationMode operationMode = modeBalance; // default mode
 
 int bandwithVoltage = 200; // default 200mV
+int newBandwithVoltage = 0; // for input bandwith voltage
 int cycleTime = 10;        // default 10s
+int newCycleTime = 0; //for input cycle time
 
 Balancer balancer;
 
@@ -137,14 +139,14 @@ void loop()
       operationMode = modeVoltBandwithInput;
       serialPlusOledDelayed((char *)"b = new Volt Bandwith Input");
       Serial.println("@ --> modeVoltBandwithInput");
-      bandwithVoltage = 0;
+      newBandwithVoltage = 0;
     }
     else if (c == 'c')
     {
       operationMode = modeCycleTime;
       serialPlusOledDelayed((char *)"c = new Cycle Time Input");
       Serial.println("c --> modeCycleTime");
-      cycleTime = 0;
+      newCycleTime = 0;
     }
 
     else if (c == 'h')
@@ -188,21 +190,22 @@ void setBandwithVoltage(char c)
 {
   if (c >= '0' && c <= '9')
   {
-    bandwithVoltage = bandwithVoltage * 10 + (c - '0');
-    if (bandwithVoltage > 999)
+    newBandwithVoltage = newBandwithVoltage * 10 + (c - '0');
+    if (newBandwithVoltage > 999)
     {
-      bandwithVoltage = 999;
+      newBandwithVoltage = 999;
       serialPlusOledDelayed((char *)"Max 999 mV");
     }
     char buf[30];
-    sprintf(buf, "Bandwith: %d mV", bandwithVoltage);
+    sprintf(buf, "Bandwith: %d mV", newBandwithVoltage);
     serialPlusOledDelayed(buf);
   }
   else if (c == '\n' || c == '\r')
   {
     char buf[30];
-    sprintf(buf, "Bandwith new: %d mV", bandwithVoltage);
+    sprintf(buf, "Bandwith new: %d mV", newBandwithVoltage);
     serialPlusOledDelayed(buf);
+    bandwithVoltage = newBandwithVoltage;
     operationMode = modeBalance;
   }
   else
@@ -215,21 +218,22 @@ void setCycleTime(char c)
 {
   if (c >= '0' && c <= '9')
   {
-    cycleTime = cycleTime * 10 + (c - '0');
-    if (cycleTime > 60)
+    newCycleTime = newCycleTime * 10 + (c - '0');
+    if (newCycleTime > 60)
     {
-      cycleTime = 60;
+      newCycleTime = 60;
       serialPlusOledDelayed((char *)"Max 60 sec");
     }
     char buf[30];
-    sprintf(buf, "Cycle Time: %d s", cycleTime);
+    sprintf(buf, "Cycle Time: %d s", newCycleTime);
     serialPlusOledDelayed(buf);
   }
   else if (c == '\n' || c == '\r')
   {
     char buf[30];
-    sprintf(buf, "Cycle Time new: %d s", cycleTime);
+    sprintf(buf, "Cycle Time new: %d s", newCycleTime);
     serialPlusOledDelayed(buf);
+    cycleTime = newCycleTime;
     operationMode = modeBalance;
   }
   else
