@@ -5,6 +5,7 @@
 
 
 
+
 enum OperationMode : byte
 {
   modeBalance = 0,
@@ -16,6 +17,6 @@ enum OperationMode : byte
 extern OperationMode operationMode;
 
 extern int bandwithVoltage;
-extern int cycleTime;
+extern int cycleTime; // in seconds
 
 #endif

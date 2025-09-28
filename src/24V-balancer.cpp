@@ -25,6 +25,7 @@
 #include "Arduino.h"
 
 #include "24V-balancer.hpp"
+#include "balancer.hpp"
 
 char c = 0;
 
@@ -39,6 +40,8 @@ OperationMode operationMode = modeBalance; // default mode
 
 int bandwithVoltage = 200; // default 200mV
 int cycleTime = 10;        // default 10s
+
+Balancer balancer;
 
 void setup()
 {
@@ -93,6 +96,9 @@ void setup()
 
   // initialize leds
   ledInit();
+
+  // initialize balancer
+  balancer.setup();
 
   // INTRO Help (also accessable with \h)
   Serial.println("###############################################################");
@@ -173,6 +179,9 @@ void loop()
     {
     }
   }
+  // cyclic balancer code
+  balancer.cyclic();
+  
 }
 
 void setBandwithVoltage(char c)
