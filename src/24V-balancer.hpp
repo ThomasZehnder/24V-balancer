@@ -19,4 +19,6 @@ extern OperationMode operationMode;
 extern int bandwithVoltage;
 extern int cycleTime; // in seconds
 
+extern char pinArray[4];
+
 #endif
