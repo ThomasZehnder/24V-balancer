@@ -32,6 +32,8 @@ private:
 
     float readAnalogInput(); // Read the analog input voltage in Volts
 
+    bool updateDisplay = false;//
+
 public:
     void setup();
     void cyclic();
@@ -41,4 +43,8 @@ public:
     String getBalancingMode();
     String getState();                       // Status als String
     String getCellVoltageString(byte index); // Zellenspannungen als String
+    bool getUpdateDisplay() const { return updateDisplay; }
+    void setUpdateDisplay(bool value) { updateDisplay = value; }
 };
+
+extern Balancer balancer;

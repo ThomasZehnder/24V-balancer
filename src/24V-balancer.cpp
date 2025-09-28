@@ -179,6 +179,7 @@ void loop()
     // no serial input available
     if (operationMode == modeBalance)
     {
+      displayBalancer();
     }
   }
   // cyclic balancer code

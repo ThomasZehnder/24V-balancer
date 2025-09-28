@@ -1,9 +1,11 @@
 #include "Arduino.h"
 #include "serial-display.hpp"
+#include "balancer.hpp"
 
 SSD1306AsciiWire oled;
 
-void displaySetup(void) {
+void displaySetup(void)
+{
   Wire.begin();
   Wire.setClock(400000L);
   oled.begin(&Adafruit128x64, I2C_ADDRESS);
@@ -33,4 +35,28 @@ void serialPlusOledDelayed(char *s)
   delay(50);
 }
 
+void displayBalancer()
+{
+  if (balancer.getUpdateDisplay())
+  {
+    balancer.setUpdateDisplay(false);
 
+    // oled.clear();
+    oled.setCursor(0, 0);
+    oled.setFont(fixed_bold10x15);
+
+    oled.print("Mode: ");
+    oled.println(balancer.getState() + "         ");
+
+    oled.setFont(System5x7);
+    
+    oled.print("Cell 1: ");
+    oled.println(balancer.getCellVoltageString(0));
+
+    oled.print("Cell 2: ");
+    oled.println(balancer.getCellVoltageString(1));
+
+    oled.print("Balancing: ");
+    oled.println(balancer.getBalancingMode());
+  }
+}

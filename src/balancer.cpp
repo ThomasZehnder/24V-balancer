@@ -55,6 +55,7 @@ void Balancer::cyclic()
             break;
         }
         printLineStatus();
+        setUpdateDisplay(true);
     }
 
     long elapsedTime = ((long)currentTime - lastBalanceTime) / 1000; // in Sekunden
