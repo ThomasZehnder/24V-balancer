@@ -58,10 +58,7 @@ void displayBalancer()
     oled.print(balancer.getCellVoltageString(1));
     oled.println(emptyLine);
 
-    oled.setFont(System5x7);
-    oled.println(emptyLine);
-
-    oled.print("Balancing: ");
+    oled.print("LOAD: ");
     oled.print(balancer.getBalancingMode());
     oled.print(emptyLine);
 
