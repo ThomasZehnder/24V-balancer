@@ -142,7 +142,7 @@ void Balancer::printLineStatus()
     status += getCellVoltageString(1);
     Serial.println(status);
     status = F("Current State: ");
-    status += getState() ;
+    status += getState();
     Serial.println(status);
     status = F("Is Balancing: ");
     status += getBalancingMode() + "\n";
@@ -163,10 +163,16 @@ String Balancer::getState()
         status = F("IDLE");
         break;
     case STATE_BALANCING_0:
-        status = F("BALANCING_0");
+        status = F("BALANCING 1");
         break;
     case STATE_BALANCING_1:
-        status = F("BALANCING_1");
+        status = F("BALANCING 2");
+        break;
+    case STATE_MEASSURE_0:
+        status = F("MEASSURE 1");
+        break;
+    case STATE_MEASSURE_1:
+        status = F("MEASSURE 2");
         break;
     default:
         status = "...";

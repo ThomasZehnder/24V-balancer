@@ -41,22 +41,29 @@ void displayBalancer()
   {
     balancer.setUpdateDisplay(false);
 
+    const char emptyLine[] = "                                       ";
+
     // oled.clear();
     oled.setCursor(0, 0);
     oled.setFont(fixed_bold10x15);
 
-    oled.print("Mode: ");
-    oled.println(balancer.getState() + "         ");
+    oled.print(balancer.getState());
+    oled.println(emptyLine);
+
+    oled.print("1: ");
+    oled.print(balancer.getCellVoltageString(0));
+    oled.println(emptyLine);
+
+    oled.print("2: ");
+    oled.print(balancer.getCellVoltageString(1));
+    oled.println(emptyLine);
 
     oled.setFont(System5x7);
-    
-    oled.print("Cell 1: ");
-    oled.println(balancer.getCellVoltageString(0));
-
-    oled.print("Cell 2: ");
-    oled.println(balancer.getCellVoltageString(1));
+    oled.println(emptyLine);
 
     oled.print("Balancing: ");
-    oled.println(balancer.getBalancingMode());
+    oled.print(balancer.getBalancingMode());
+    oled.print(emptyLine);
+
   }
 }
