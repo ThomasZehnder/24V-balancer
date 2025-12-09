@@ -63,7 +63,7 @@ void Balancer::cyclic()
     if (elapsedTime >= cycleTime)
     {
         lastBalanceTime = currentTime;
-        Serial.println(F("Balancing cells...")); // Platzhalter-Ausgabe
+        Serial.println(F("Balancing batteries...")); // Platzhalter-Ausgabe
 
         switch (balanceState)
         {
@@ -89,7 +89,7 @@ void Balancer::cyclic()
 float Balancer::readAnalogInput()
 {
     int value = analogRead(ANALOG_INPUT_PIN);
-    float voltage = (value / 1023.0) *5*3; // Annahme: 5V Referenzspannung mit Spannungsteiler 1/3
+    float voltage = (value / 1023.0) *5*3/13.21*13.14; // Annahme: 5V Referenzspannung mit Spannungsteiler 1/3
     Serial.print(F("Analog A0: "));
     Serial.print(value);
     Serial.print(":");
@@ -121,6 +121,7 @@ void Balancer::switchLoadResistor(bool state)
     // Load resistor control code here
     isBalancing = state;                                            // Status, ob gerade balanciert wird
     digitalWrite(pinArray[LOADRESISTOR_SELECT_INDEX], isBalancing); // select cell
+    digitalWrite(LED_BUILTIN, isBalancing); //show on led
     Serial.print(F("Load resistor:"));
     Serial.println(isBalancing ? " ON" : " OFF");
 }
@@ -128,7 +129,7 @@ void Balancer::switchLoadResistor(bool state)
 bool Balancer::calculateBalanceNeeded(byte index1, byte index2)
 {
     float voltageDiff = (cellVoltages[index1] - cellVoltages[index2]) * 1000.0; // in mV
-    Serial.print(F("Cell Voltage Difference: "));
+    Serial.print(F("Batteries Voltage Difference: "));
     Serial.print(voltageDiff);
     Serial.println(" mV");
     return voltageDiff > bandwithVoltage;
@@ -138,10 +139,10 @@ void Balancer::printLineStatus()
 {
     String status = F("Balancer Status:");
     Serial.println(status);
-    status = "Cell 0 Voltage: ";
+    status = "Bat 0 Voltage: ";
     status += getCellVoltageString(0);
     Serial.println(status);
-    status = F("Cell 1 Voltage: ");
+    status = F("Bat 1 Voltage: ");
     status += getCellVoltageString(1);
     Serial.println(status);
     status = F("Current State: ");

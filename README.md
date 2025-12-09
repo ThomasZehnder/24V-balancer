@@ -31,7 +31,7 @@ DC/DC converter 24V /5V galvanic separated
 
     Battery Mesasure = A0 
 
-    Resistor 1k/2k --> 15V --> 5V
+    Resistor 10k/20k --> 15V --> 5V
 
 ## Quick Reference Table Votages
 

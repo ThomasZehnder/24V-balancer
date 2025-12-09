@@ -3,7 +3,8 @@
 Arduino UNano V3.0 mit OLED display
 DC/DC Wandler 24V /5V galvanisch getrennt.
 
-![arduino-ui-test-board](images/arduino-serial-ui.jpg)
+![arduino-ui-test-board](images/20251209_181456.jpg)
+
 
 ## Verbindung über Console
 
@@ -50,5 +51,4 @@ With '#' you can change to force the aouputs or leds
 
     Battery Mesasure = A0 
 
-    Resistor 1k/2k --> 15V --> 5V
-
+    Resistor 10k/20k --> 15V --> 5V
