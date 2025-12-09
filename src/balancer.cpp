@@ -191,5 +191,5 @@ String Balancer::getCellVoltageString(byte index)
     {
         return F("Invalid cell index");
     }
-    return String(cellVoltages[index]) + " V";
+    return String(cellVoltages[index]);
 }

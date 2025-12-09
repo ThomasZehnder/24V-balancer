@@ -2,6 +2,5 @@
 #define serial_help_h
 
     void help(void);
-    void showMode(void);
 
 #endif //serial_help_h

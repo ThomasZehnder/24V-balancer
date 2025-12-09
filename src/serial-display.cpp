@@ -50,11 +50,9 @@ void displayBalancer()
     oled.print(balancer.getState());
     oled.println(emptyLine);
 
-    oled.print("1: ");
     oled.print(balancer.getCellVoltageString(0));
-    oled.println(emptyLine);
-
-    oled.print("2: ");
+  
+    oled.print(":");
     oled.print(balancer.getCellVoltageString(1));
     oled.println(emptyLine);
 

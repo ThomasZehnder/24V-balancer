@@ -35,12 +35,9 @@ char selectetPin = 0;
 bool valKey[2];
 bool valKey_old[2];
 
-OperationMode operationMode = modeBalance; // default mode
-
 int bandwithVoltage = 100;  // default 100mV
 int newBandwithVoltage = 0; // for input bandwith voltage
 int cycleTime = 30;         // default 30s
-int newCycleTime = 0;       // for input cycle time
 
 Balancer balancer;
 
@@ -114,52 +111,8 @@ void setCycleTime(char c);
 
 void loop()
 {
-  // if there's any serial available, read it:
-  if (Serial.available() > 0)
-  {
-    // look wait on input
-    c = Serial.read();
 
-    if (c == '@')
-    {
-      operationMode = modeBalance;
-      serialPlusOledDelayed((char *)"@ = switch to Balance Mode (default)");
-      Serial.println("@ --> modeBalance");
-    }
+  displayBalancer();
 
-    else if (c == '#')
-    {
-      operationMode = modeLedCommand;
-      serialPlusOledDelayed((char *)"# = switch to Out Test");
-      Serial.println("# --> modeLedCommand");
-    }
-
-    else if (c == 'h')
-    {
-      help();
-    }
-
-    else if (operationMode == modeLedCommand)
-    {
-      // pass command to led handler
-      ledCommand(c);
-    }
-
-    else
-    {
-      serialPlusOledDelayed((char *)"not valid key");
-      Serial.println("character: " + String(c) + " not valid in thes");
-      serialPlusOledDelayed((char *)"use h for help");
-    }
-  }
-  else
-  {
-    // no serial input available
-    if (operationMode == modeBalance)
-    {
-      displayBalancer();
-    }
-  }
-  // cyclic balancer code
   balancer.cyclic();
 }
