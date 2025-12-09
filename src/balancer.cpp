@@ -194,3 +194,8 @@ String Balancer::getCellVoltageString(byte index)
     }
     return String(cellVoltages[index]);
 }
+
+String Balancer::getDifferenceString()
+{
+    return String((int)voltageDiff/10*10); // rounded to 10mV
+}

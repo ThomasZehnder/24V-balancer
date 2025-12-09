@@ -47,7 +47,7 @@ public:
     String getCellVoltageString(byte index); // Zellenspannungen als String
     bool getUpdateDisplay() const { return updateDisplay; }
     void setUpdateDisplay(bool value) { updateDisplay = value; }
-    String getDifference() { return String((int)voltageDiff/10*10); }
+    String getDifferenceString();
 };
 
 extern Balancer balancer;

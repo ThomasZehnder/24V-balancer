@@ -51,18 +51,19 @@ void displayBalancer()
     oled.println(emptyLine);
 
     oled.print(balancer.getCellVoltageString(0));
-  
+
     oled.print(":");
     oled.print(balancer.getCellVoltageString(1));
     oled.println(emptyLine);
 
-oled.setFont(System5x7);
+    oled.setFont(System5x7);
+    oled.println(emptyLine);
 
     oled.print("Diff: ");
-    oled.print(balancer.getDifference());
+    oled.print(balancer.getDifferenceString());
     oled.print(" mV");
     oled.println(emptyLine);
-    oled.print("LOAD: ");
+    oled.print("Load: ");
     oled.print(balancer.getBalancingMode());
     oled.print(emptyLine);
   }
