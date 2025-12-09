@@ -59,11 +59,23 @@ void Balancer::cyclic()
         setUpdateDisplay(true);
     }
 
+    
+    // reduce cycletime in case of not balancing
+    long localCycleTime;
+    if (!isBalancing)
+    {
+        localCycleTime = 2; // 2s
+    }
+    else
+    {
+        localCycleTime = cycleTime; 
+    }
+
     long elapsedTime = ((long)currentTime - lastBalanceTime) / 1000; // in Sekunden
-    if (elapsedTime >= cycleTime)
+    if (elapsedTime >= localCycleTime)
     {
         lastBalanceTime = currentTime;
-        Serial.println(F("Balancing batteries...")); // Platzhalter-Ausgabe
+        Serial.println(F("Balancing batteries...")); 
 
         switch (balanceState)
         {
@@ -79,6 +91,7 @@ void Balancer::cyclic()
             setCellIndex(0);
             Serial.println(F("State changed to STATE_BALANCING_0"));
             break;
+
         default:
             //
             break;
