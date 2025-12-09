@@ -17,9 +17,6 @@ class Balancer
     };
 
 private:
-    unsigned long startTime;             // Startzeitpunkt
-    unsigned long lastBalanceTime;       // Letzter Balancierzeitpunkt
-    unsigned long lastMeasureTime;       // Letzter Messzeitpunkt
     BalancerState balanceState;          // Status des Balancers
     float cellVoltages[NUMBER_OF_CELLS]; // Array für Zellenspannungen
     byte cellIndex;                      // Index der aktuellen Zelle
@@ -32,22 +29,28 @@ private:
 
     float readAnalogInput(); // Read the analog input voltage in Volts
 
-    bool updateDisplay = false; //only set when display should be updated
+    bool updateDisplay = false; // only set when display should be updated
 
     float voltageDiff = 0.0; // voltage difference between cells
+
+    unsigned long startTime = 0;       // time when balancer started
+    unsigned long lastMeasureTime = 0; // time when last meassurment was done
+    long elapsedTime = 0;              // time in state
+    unsigned long lastBalanceTime = 0; // last time balancing started
 
 public:
     void setup();
     void cyclic();
 
-    float getCellVoltage(byte cellIndex);     // Abrufen der Zellenspannung
-    void printLineStatus();                  // Gesamt Status als String aus Serial ausgeben
+    float getCellVoltage(byte cellIndex); // Abrufen der Zellenspannung
+    void printLineStatus();               // Gesamt Status als String aus Serial ausgeben
     String getBalancingMode();
     String getState();                       // Status als String
     String getCellVoltageString(byte index); // Zellenspannungen als String
     bool getUpdateDisplay() const { return updateDisplay; }
     void setUpdateDisplay(bool value) { updateDisplay = value; }
     String getDifferenceString();
+    String getElapsedTimeString() { return (String(elapsedTime)); };
 };
 
 extern Balancer balancer;

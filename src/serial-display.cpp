@@ -65,6 +65,8 @@ void displayBalancer()
     oled.println(emptyLine);
     oled.print("Load: ");
     oled.print(balancer.getBalancingMode());
+    oled.print(" elapsed: ");
+    oled.print(balancer.getElapsedTimeString());
     oled.print(emptyLine);
   }
 }

@@ -71,7 +71,7 @@ void Balancer::cyclic()
         localCycleTime = cycleTime; 
     }
 
-    long elapsedTime = ((long)currentTime - lastBalanceTime) / 1000; // in Sekunden
+    elapsedTime = ((long)currentTime - lastBalanceTime) / 1000; // in Sekunden
     if (elapsedTime >= localCycleTime)
     {
         lastBalanceTime = currentTime;
