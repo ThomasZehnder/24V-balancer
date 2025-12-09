@@ -11,8 +11,8 @@ void Balancer::setup()
     lastMeasureTime = startTime; // Mess-Timer initialisieren
     balanceState = STATE_IDLE;
     cellIndex = 0;
-    cellVoltages[0] = 0.0;
-    cellVoltages[1] = 0.0;
+    //cellVoltages[0] = 0.0;
+    //cellVoltages[1] = 0.0;
     analogReference(DEFAULT); // Use internal 5V reference, AREF pin unused
 }
 
@@ -98,9 +98,9 @@ float Balancer::readAnalogInput()
     return voltage;
 }
 
-float Balancer::getCellVoltage(int cellIndex)
+float Balancer::getCellVoltage(byte cellIndex)
 {
-    if (cellIndex < 0 || cellIndex >= 2)
+    if (cellIndex >= NUMBER_OF_CELLS)
     {
         Serial.println(F("Invalid cell index"));
         return 0.0; // Ungültiger Index
@@ -110,6 +110,10 @@ float Balancer::getCellVoltage(int cellIndex)
 
 void Balancer::setCellIndex(byte index)
 {
+    if (cellIndex >= NUMBER_OF_CELLS)
+    {
+        Serial.println(F("Invalid cell index"));
+    }    
     cellIndex = index;
     Serial.print(F("New cell index: "));
     Serial.println(cellIndex);
@@ -187,7 +191,7 @@ String Balancer::getState()
 
 String Balancer::getCellVoltageString(byte index)
 {
-    if (index >= 2)
+    if (index >= NUMBER_OF_CELLS)
     {
         return F("Invalid cell index");
     }

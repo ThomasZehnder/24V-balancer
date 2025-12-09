@@ -40,7 +40,7 @@ public:
     void setup();
     void cyclic();
 
-    float getCellVoltage(int cellIndex);     // Abrufen der Zellenspannung
+    float getCellVoltage(byte cellIndex);     // Abrufen der Zellenspannung
     void printLineStatus();                  // Gesamt Status als String aus Serial ausgeben
     String getBalancingMode();
     String getState();                       // Status als String
