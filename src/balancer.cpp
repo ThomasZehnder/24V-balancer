@@ -103,7 +103,7 @@ float Balancer::getCellVoltage(byte cellIndex)
     if (cellIndex >= NUMBER_OF_CELLS)
     {
         Serial.println(F("Invalid cell index"));
-        return 0.0; // Ungültiger Index
+        return 0.0; 
     }
     return cellVoltages[cellIndex];
 }
@@ -117,13 +117,12 @@ void Balancer::setCellIndex(byte index)
     cellIndex = index;
     Serial.print(F("New cell index: "));
     Serial.println(cellIndex);
-    digitalWrite(pinArray[CELL_SELECT_INDEX], cellIndex == 1 ? LOW : HIGH); // select cell
+    digitalWrite(pinArray[CELL_SELECT_INDEX], cellIndex == 1 ? LOW : HIGH); // select cell inverted logic
 }
 
 void Balancer::switchLoadResistor(bool state)
 {
-    // Load resistor control code here
-    isBalancing = state;                                            // Status, ob gerade balanciert wird
+    isBalancing = state;                                           
     digitalWrite(pinArray[LOADRESISTOR_SELECT_INDEX], isBalancing); // select cell
     digitalWrite(LED_BUILTIN, isBalancing); //show on build led
     Serial.print(F("Load resistor:"));
