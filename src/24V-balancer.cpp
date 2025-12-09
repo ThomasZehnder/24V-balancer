@@ -105,11 +105,8 @@ void setup()
 
   serialPlusOledDelayed((char *)"Boot finished!!!");
 
-  delay(1000);
+  delay(2000);
 }
-
-void setBandwithVoltage(char c);
-void setCycleTime(char c);
 
 void loop()
 {
