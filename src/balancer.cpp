@@ -117,7 +117,7 @@ void Balancer::setCellIndex(byte index)
     cellIndex = index;
     Serial.print(F("New cell index: "));
     Serial.println(cellIndex);
-    digitalWrite(pinArray[CELL_SELECT_INDEX], cellIndex); // select cell
+    digitalWrite(pinArray[CELL_SELECT_INDEX], cellIndex == 1 ? LOW : HIGH); // select cell
 }
 
 void Balancer::switchLoadResistor(bool state)
