@@ -104,6 +104,8 @@ void setup()
   Serial.println("###############################################################");
 
   serialPlusOledDelayed((char *)"Boot finished!!!");
+
+  delay(1000);
 }
 
 void setBandwithVoltage(char c);

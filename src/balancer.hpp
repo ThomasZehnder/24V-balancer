@@ -32,7 +32,9 @@ private:
 
     float readAnalogInput(); // Read the analog input voltage in Volts
 
-    bool updateDisplay = false;//
+    bool updateDisplay = false; //only set when display should be updated
+
+    float voltageDiff = 0.0; // voltage difference between cells
 
 public:
     void setup();
@@ -45,6 +47,7 @@ public:
     String getCellVoltageString(byte index); // Zellenspannungen als String
     bool getUpdateDisplay() const { return updateDisplay; }
     void setUpdateDisplay(bool value) { updateDisplay = value; }
+    String getDifference() { return String((int)voltageDiff/10*10); }
 };
 
 extern Balancer balancer;

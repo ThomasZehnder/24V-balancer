@@ -121,14 +121,15 @@ void Balancer::switchLoadResistor(bool state)
     // Load resistor control code here
     isBalancing = state;                                            // Status, ob gerade balanciert wird
     digitalWrite(pinArray[LOADRESISTOR_SELECT_INDEX], isBalancing); // select cell
-    digitalWrite(LED_BUILTIN, isBalancing); //show on led
+    int ledBrightness = isBalancing ? 32 : 0; //0..255
+    analogWrite(LED_BUILTIN, ledBrightness); //show on led
     Serial.print(F("Load resistor:"));
     Serial.println(isBalancing ? " ON" : " OFF");
 }
 
 bool Balancer::calculateBalanceNeeded(byte index1, byte index2)
 {
-    float voltageDiff = (cellVoltages[index1] - cellVoltages[index2]) * 1000.0; // in mV
+    voltageDiff = (cellVoltages[index1] - cellVoltages[index2]) * 1000.0; // in mV
     Serial.print(F("Batteries Voltage Difference: "));
     Serial.print(voltageDiff);
     Serial.println(" mV");
