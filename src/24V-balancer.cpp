@@ -35,13 +35,12 @@ char selectetPin = 0;
 bool valKey[2];
 bool valKey_old[2];
 
-
 OperationMode operationMode = modeBalance; // default mode
 
-int bandwithVoltage = 100; // default 100mV
+int bandwithVoltage = 100;  // default 100mV
 int newBandwithVoltage = 0; // for input bandwith voltage
-int cycleTime = 10;        // default 10s
-int newCycleTime = 0; //for input cycle time
+int cycleTime = 30;         // default 30s
+int newCycleTime = 0;       // for input cycle time
 
 Balancer balancer;
 
@@ -134,20 +133,6 @@ void loop()
       serialPlusOledDelayed((char *)"# = switch to Out Test");
       Serial.println("# --> modeLedCommand");
     }
-    else if (c == 'b')
-    {
-      operationMode = modeVoltBandwithInput;
-      serialPlusOledDelayed((char *)"b = new Volt Bandwith Input");
-      Serial.println("@ --> modeVoltBandwithInput");
-      newBandwithVoltage = 0;
-    }
-    else if (c == 'c')
-    {
-      operationMode = modeCycleTime;
-      serialPlusOledDelayed((char *)"c = new Cycle Time Input");
-      Serial.println("c --> modeCycleTime");
-      newCycleTime = 0;
-    }
 
     else if (c == 'h')
     {
@@ -159,14 +144,7 @@ void loop()
       // pass command to led handler
       ledCommand(c);
     }
-    else if (operationMode == modeCycleTime)
-    {
-      setCycleTime(c);
-    }
-    else if (operationMode == modeVoltBandwithInput)
-    {
-      setBandwithVoltage(c);
-    }
+
     else
     {
       serialPlusOledDelayed((char *)"not valid key");
@@ -184,61 +162,4 @@ void loop()
   }
   // cyclic balancer code
   balancer.cyclic();
-  
-}
-
-void setBandwithVoltage(char c)
-{
-  if (c >= '0' && c <= '9')
-  {
-    newBandwithVoltage = newBandwithVoltage * 10 + (c - '0');
-    if (newBandwithVoltage > 999)
-    {
-      newBandwithVoltage = 999;
-      serialPlusOledDelayed((char *)"Max 999 mV");
-    }
-    char buf[30];
-    sprintf(buf, "Bandwith: %d mV", newBandwithVoltage);
-    serialPlusOledDelayed(buf);
-  }
-  else if (c == '\n' || c == '\r')
-  {
-    char buf[30];
-    sprintf(buf, "Bandwith new: %d mV", newBandwithVoltage);
-    serialPlusOledDelayed(buf);
-    bandwithVoltage = newBandwithVoltage;
-    operationMode = modeBalance;
-  }
-  else
-  {
-    serialPlusOledDelayed((char *)"Invalid input - only 0..9 or <Enter>");
-  }
-}
-
-void setCycleTime(char c)
-{
-  if (c >= '0' && c <= '9')
-  {
-    newCycleTime = newCycleTime * 10 + (c - '0');
-    if (newCycleTime > 60)
-    {
-      newCycleTime = 60;
-      serialPlusOledDelayed((char *)"Max 60 sec");
-    }
-    char buf[30];
-    sprintf(buf, "Cycle Time: %d s", newCycleTime);
-    serialPlusOledDelayed(buf);
-  }
-  else if (c == '\n' || c == '\r')
-  {
-    char buf[30];
-    sprintf(buf, "Cycle Time new: %d s", newCycleTime);
-    serialPlusOledDelayed(buf);
-    cycleTime = newCycleTime;
-    operationMode = modeBalance;
-  }
-  else
-  {
-    serialPlusOledDelayed((char *)"Invalid input - only 0..9 or <Enter>");
-  }
 }

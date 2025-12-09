@@ -2,9 +2,11 @@
 
 24 Volt lifepo balancer for two 12 Volt batteries.
 
-Arduino UNano V3.0 with OLED display.
+Arduino Nano V3.0 with OLED display.
 
 DC/DC converter 24V /5V galvanic separated
+
+![arduino-ui-demo-board](images/20251209_181456.jpg)
 
 ## IOs
 
@@ -29,7 +31,7 @@ DC/DC converter 24V /5V galvanic separated
 
 ## Analog in
 
-    Battery Mesasure = A0 
+    Battery Meassure = A0 
 
     Resistor 10k/20k --> 15V --> 5V
 
