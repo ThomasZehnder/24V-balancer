@@ -50,6 +50,7 @@ public:
     bool getUpdateDisplay() const { return updateDisplay; }
     void setUpdateDisplay(bool value) { updateDisplay = value; }
     String getDifferenceString();
+    String getCycleTimeString() { return (String(cycleTime)); };
     String getElapsedTimeString() { return (String(elapsedTime)); };
 };
 

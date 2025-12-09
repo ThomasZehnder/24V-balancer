@@ -59,14 +59,15 @@ void displayBalancer()
     oled.setFont(System5x7);
     oled.println(emptyLine);
 
-    oled.print("Diff: ");
-    oled.print(balancer.getDifferenceString());
-    oled.print(" mV");
-    oled.println(emptyLine);
+    oled.print("D: ");
+    oled.print(balancer.getDifferenceString() + "mV ");
     oled.print("Load: ");
     oled.print(balancer.getBalancingMode());
-    oled.print(" elapsed: ");
-    oled.print(balancer.getElapsedTimeString());
+     oled.println(emptyLine);
+
+    oled.print("timer: ");
+    oled.print(balancer.getElapsedTimeString() + "/");
+    oled.print(balancer.getCycleTimeString() + "s");
     oled.print(emptyLine);
   }
 }
