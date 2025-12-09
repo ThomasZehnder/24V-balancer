@@ -38,7 +38,7 @@ bool valKey_old[2];
 
 OperationMode operationMode = modeBalance; // default mode
 
-int bandwithVoltage = 200; // default 200mV
+int bandwithVoltage = 100; // default 100mV
 int newBandwithVoltage = 0; // for input bandwith voltage
 int cycleTime = 10;        // default 10s
 int newCycleTime = 0; //for input cycle time

@@ -13,6 +13,7 @@ void Balancer::setup()
     cellIndex = 0;
     cellVoltages[0] = 0.0;
     cellVoltages[1] = 0.0;
+    analogReference(DEFAULT); // Use internal 5V reference, AREF pin unused
 }
 
 void Balancer::cyclic()
@@ -88,8 +89,10 @@ void Balancer::cyclic()
 float Balancer::readAnalogInput()
 {
     int value = analogRead(ANALOG_INPUT_PIN);
-    float voltage = (value / 1023.0) * 15.0; // Annahme: 5V Referenzspannung mit Spannungsteiler 1/3
+    float voltage = (value / 1023.0) *5*3; // Annahme: 5V Referenzspannung mit Spannungsteiler 1/3
     Serial.print(F("Analog A0: "));
+    Serial.print(value);
+    Serial.print(":");
     Serial.print(voltage);
     Serial.println("V");
     return voltage;
