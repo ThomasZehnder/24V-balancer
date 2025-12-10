@@ -108,7 +108,6 @@ void setup()
 
 void loop()
 {
-  getMode();
 
   displayBalancer();
 

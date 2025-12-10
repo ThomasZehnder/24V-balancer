@@ -105,9 +105,9 @@ void Balancer::cyclic()
         }
     }
 }
-BalancerMode Balancer::getMode()
+BalancerMode Balancer::readModeInputs()
 {   bool input1 = digitalRead(MODE_PIN_1); // Mode pin 1
-    bool input2 = digitalRead(MODE_PIN_1); // Mode pin 2
+    bool input2 = digitalRead(MODE_PIN_2); // Mode pin 2
     if (!input1 && !input2)
     {
         mode = MODE_MEASSURE;
