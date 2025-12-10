@@ -64,23 +64,19 @@ void Balancer::cyclic()
         switch (mode)
         {
         case MODE_MEASSURE:
-
             switchLoadResistor(false);
-            Serial.println(F("Mode MEASSURE: Load OFF"));
+            voltageLimit = 0.0f;
             break;
         case MODE_BALANCE:
             // Balancing as per state machine
+            voltageLimit = 0.0f;
             switchLoadResistor(isBalancing);
-            Serial.print(F("Mode BALANCE: Load "));
-            Serial.println(isBalancing ? "ON" : "OFF");
             break;
         case Mode_UNLOAD_75:
             switchLoadResistor(voltagesUpperLimit(VOLTAGELIMIT_75));
-            Serial.println(F("Mode UNLOAD_75: Load ON"));
             break;
         case Mode_UNLOAD_50:
             switchLoadResistor(voltagesUpperLimit(VOLTAGELIMIT_50));
-            Serial.println(F("Mode UNLOAD_50: Load ON"));
             break;
         }
         printLineStatus();
