@@ -32,9 +32,6 @@ char c = 0;
 char pinArray[4];
 char selectetPin = 0;
 
-bool valKey[2];
-bool valKey_old[2];
-
 int bandwithVoltage = 100;  // default 100mV
 int newBandwithVoltage = 0; // for input bandwith voltage
 int cycleTime = 30;         // default 30s
@@ -108,8 +105,10 @@ void setup()
   delay(2000);
 }
 
+
 void loop()
 {
+  getMode();
 
   displayBalancer();
 

@@ -5,6 +5,15 @@ const int NUMBER_OF_CELLS = 2;           // Anzahl der Zellen
 const int CELL_SELECT_INDEX = 1;         // Pin zum Auswählen der Zelle
 const int LOADRESISTOR_SELECT_INDEX = 2; // Pin zum Schalten des Lastwiderstands
 
+enum BalancerMode
+{
+    MODE_MEASSURE,
+    MODE_BALANCE,
+    Mode_UNLOAD_75,
+    Mode_UNLOAD_50
+};
+
+
 class Balancer
 {
     enum BalancerState
@@ -29,6 +38,10 @@ private:
 
     float readAnalogInput(); // Read the analog input voltage in Volts
 
+    BalancerMode mode = MODE_MEASSURE;
+
+    BalancerMode readModeInputs();
+
     bool updateDisplay = false; // only set when display should be updated
 
     float voltageDiff = 0.0; // voltage difference between cells
@@ -41,6 +54,9 @@ private:
 public:
     void setup();
     void cyclic();
+
+    BalancerMode getMode();
+    String getModeString();
 
     float getCellVoltage(byte cellIndex); // Abrufen der Zellenspannung
     void printLineStatus();               // Gesamt Status als String aus Serial ausgeben

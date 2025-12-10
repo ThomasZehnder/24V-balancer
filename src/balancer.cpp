@@ -2,6 +2,8 @@
 #include "Arduino.h"
 
 #define ANALOG_INPUT_PIN A0 // Define the analog input pin
+#define MODE_PIN_1 11    // Define mode input pin 1
+#define MODE_PIN_2 12    // Define mode input pin 2
 
 void Balancer::setup()
 {
@@ -11,9 +13,11 @@ void Balancer::setup()
     lastMeasureTime = startTime; // Mess-Timer initialisieren
     balanceState = STATE_IDLE;
     cellIndex = 0;
-    //cellVoltages[0] = 0.0;
-    //cellVoltages[1] = 0.0;
     analogReference(DEFAULT); // Use internal 5V reference, AREF pin unused
+
+    pinMode(MODE_PIN_1, INPUT_PULLUP);
+    pinMode(MODE_PIN_2, INPUT_PULLUP);  
+
 }
 
 void Balancer::cyclic()
@@ -25,7 +29,10 @@ void Balancer::cyclic()
     if (currentTime - lastMeasureTime >= 1000)
     {
         lastMeasureTime = currentTime;
+
         cellVoltages[cellIndex] = readAnalogInput();
+
+        mode = readModeInputs();
 
         switch (balanceState)
         {
@@ -98,6 +105,33 @@ void Balancer::cyclic()
         }
     }
 }
+BalancerMode Balancer::getMode()
+{   bool input1 = digitalRead(MODE_PIN_1); // Mode pin 1
+    bool input2 = digitalRead(MODE_PIN_1); // Mode pin 2
+    if (!input1 && !input2)
+    {
+        mode = MODE_MEASSURE;
+    }
+    else if (!input1 && input2)
+    {
+        mode = MODE_BALANCE;
+    }
+    else if (input1 && !input2)
+    {
+        mode = Mode_UNLOAD_75;
+    }
+    else // if (input1 && input2)
+    {
+        mode = Mode_UNLOAD_50;
+    }
+
+    return mode;
+}
+String Balancer::getModeString()
+{
+    const char* modes[] = {"MEASSURE", "BALANCE", "UNLOAD_75", "UNLOAD_50"};
+    return String(modes[mode]);
+}
 
 float Balancer::readAnalogInput()
 {
@@ -166,6 +200,9 @@ void Balancer::printLineStatus()
     Serial.println(status);
     status = F("Is Balancing: ");
     status += getBalancingMode() + "\n";
+    Serial.println(status);
+    status = F("Balancer Mode: ");
+    status += getModeString() + "\n";
     Serial.println(status);
 }
 
