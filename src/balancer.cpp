@@ -68,9 +68,7 @@ void Balancer::cyclic()
             voltageLimit = 0.0f;
             break;
         case MODE_BALANCE:
-            // Balancing as per state machine
-            voltageLimit = 0.0f;
-            switchLoadResistor(isBalancing);
+            switchLoadResistor(voltagesUpperLimit(VOLTAGELIMIT_25));
             break;
         case Mode_UNLOAD_75:
             switchLoadResistor(voltagesUpperLimit(VOLTAGELIMIT_75));

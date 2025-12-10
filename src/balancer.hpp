@@ -15,6 +15,8 @@ enum BalancerMode
 
 #define VOLTAGELIMIT_75 13.10f // Voltage limit for 75% unload
 #define VOLTAGELIMIT_50 13.00f // Voltage limit for 50% unload
+#define VOLTAGELIMIT_25 12.80f // Voltage limit for 25% unload
+
 
 class Balancer
 {
