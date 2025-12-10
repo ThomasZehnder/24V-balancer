@@ -13,6 +13,8 @@ enum BalancerMode
     Mode_UNLOAD_50
 };
 
+#define VOLTAGELIMIT_75 13.10f // Voltage limit for 75% unload
+#define VOLTAGELIMIT_50 13.00f // Voltage limit for 50% unload
 
 class Balancer
 {
@@ -30,7 +32,7 @@ private:
     float cellVoltages[NUMBER_OF_CELLS]; // Array für Zellenspannungen
     byte cellIndex;                      // Index der aktuellen Zelle
     void setCellIndex(byte index);
-    void switchLoadResistor(bool state);
+    void switchLoadResistor(bool enable = true);
 
     bool calculateBalanceNeeded(byte index1, byte index2);
 
@@ -41,6 +43,8 @@ private:
     BalancerMode mode = MODE_MEASSURE;
 
     BalancerMode readModeInputs();
+
+    bool voltagesUpperLimit(float limitVoltage);    
 
     bool updateDisplay = false; // only set when display should be updated
 

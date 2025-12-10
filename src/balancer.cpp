@@ -2,8 +2,8 @@
 #include "Arduino.h"
 
 #define ANALOG_INPUT_PIN A0 // Define the analog input pin
-#define MODE_PIN_1 11    // Define mode input pin 1
-#define MODE_PIN_2 12    // Define mode input pin 2
+#define MODE_PIN_1 11       // Define mode input pin 1
+#define MODE_PIN_2 12       // Define mode input pin 2
 
 void Balancer::setup()
 {
@@ -16,8 +16,7 @@ void Balancer::setup()
     analogReference(DEFAULT); // Use internal 5V reference, AREF pin unused
 
     pinMode(MODE_PIN_1, INPUT_PULLUP);
-    pinMode(MODE_PIN_2, INPUT_PULLUP);  
-
+    pinMode(MODE_PIN_2, INPUT_PULLUP);
 }
 
 void Balancer::cyclic()
@@ -51,22 +50,43 @@ void Balancer::cyclic()
             Serial.println(F("State changed to STATE_BALANCING_0"));
             break;
         case STATE_BALANCING_0:
-            switchLoadResistor(calculateBalanceNeeded(0, 1));
+            isBalancing = calculateBalanceNeeded(0, 1);
             break;
 
         case STATE_BALANCING_1:
-            switchLoadResistor(calculateBalanceNeeded(1, 0));
+            isBalancing = calculateBalanceNeeded(1, 0);
             break;
 
         default:
             switchLoadResistor(false);
             break;
         }
+        switch (mode)
+        {
+        case MODE_MEASSURE:
+
+            switchLoadResistor(false);
+            Serial.println(F("Mode MEASSURE: Load OFF"));
+            break;
+        case MODE_BALANCE:
+            // Balancing as per state machine
+            switchLoadResistor(isBalancing);
+            Serial.print(F("Mode BALANCE: Load "));
+            Serial.println(isBalancing ? "ON" : "OFF");
+            break;
+        case Mode_UNLOAD_75:
+            switchLoadResistor(voltagesUpperLimit(VOLTAGELIMIT_75));
+            Serial.println(F("Mode UNLOAD_75: Load ON"));
+            break;
+        case Mode_UNLOAD_50:
+            switchLoadResistor(voltagesUpperLimit(VOLTAGELIMIT_50));
+            Serial.println(F("Mode UNLOAD_50: Load ON"));
+            break;
+        }
         printLineStatus();
         setUpdateDisplay(true);
     }
 
-    
     // reduce cycletime in case of not balancing
     long localCycleTime;
     if (!isBalancing)
@@ -75,14 +95,14 @@ void Balancer::cyclic()
     }
     else
     {
-        localCycleTime = cycleTime; 
+        localCycleTime = cycleTime;
     }
 
     elapsedTime = ((long)currentTime - lastBalanceTime) / 1000; // in Sekunden
     if (elapsedTime >= localCycleTime)
     {
         lastBalanceTime = currentTime;
-        Serial.println(F("Balancing batteries...")); 
+        Serial.println(F("Balancing batteries..."));
 
         switch (balanceState)
         {
@@ -106,7 +126,8 @@ void Balancer::cyclic()
     }
 }
 BalancerMode Balancer::readModeInputs()
-{   bool input1 = digitalRead(MODE_PIN_1); // Mode pin 1
+{
+    bool input1 = digitalRead(MODE_PIN_1); // Mode pin 1
     bool input2 = digitalRead(MODE_PIN_2); // Mode pin 2
     if (!input1 && !input2)
     {
@@ -129,14 +150,14 @@ BalancerMode Balancer::readModeInputs()
 }
 String Balancer::getModeString()
 {
-    const char* modes[] = {"MEASSURE", "BALANCE", "UNLOAD_75", "UNLOAD_50"};
+    const char *modes[] = {"MEASSURE", "BALANCE", "UNLOAD_75", "UNLOAD_50"};
     return String(modes[mode]);
 }
 
 float Balancer::readAnalogInput()
 {
     int value = analogRead(ANALOG_INPUT_PIN);
-    float voltage = (value / 1023.0) *5*3/13.21*13.14; // Annahme: 5V Referenzspannung mit Spannungsteiler 1/3
+    float voltage = (value / 1023.0) * 5 * 3 / 13.21 * 13.14; // Annahme: 5V Referenzspannung mit Spannungsteiler 1/3
     Serial.print(F("Analog A0: "));
     Serial.print(value);
     Serial.print(":");
@@ -150,7 +171,7 @@ float Balancer::getCellVoltage(byte cellIndex)
     if (cellIndex >= NUMBER_OF_CELLS)
     {
         Serial.println(F("Invalid cell index"));
-        return 0.0; 
+        return 0.0;
     }
     return cellVoltages[cellIndex];
 }
@@ -160,18 +181,36 @@ void Balancer::setCellIndex(byte index)
     if (cellIndex >= NUMBER_OF_CELLS)
     {
         Serial.println(F("Invalid cell index"));
-    }    
+    }
     cellIndex = index;
     Serial.print(F("New cell index: "));
     Serial.println(cellIndex);
     digitalWrite(pinArray[CELL_SELECT_INDEX], cellIndex == 1 ? LOW : HIGH); // select cell inverted logic
 }
-
-void Balancer::switchLoadResistor(bool state)
+bool Balancer::voltagesUpperLimit(float limitVoltage)
 {
-    isBalancing = state;                                           
+    bool upperLimit = true;
+    for (byte i = 0; i < NUMBER_OF_CELLS; i++)
+    {
+        if (cellVoltages[i] < limitVoltage)
+        {
+            upperLimit = false;
+            Serial.print(F("Cell "));
+            Serial.print(i);
+            Serial.print(F(" voltage "));
+            Serial.print(cellVoltages[i]);
+            Serial.print(F("V under limit of "));
+            Serial.print(limitVoltage);
+            Serial.println(F("V"));
+        }
+    }
+    return upperLimit;
+}
+void Balancer::switchLoadResistor(bool enable)
+{
+    isBalancing = enable;
     digitalWrite(pinArray[LOADRESISTOR_SELECT_INDEX], isBalancing); // select cell
-    digitalWrite(LED_BUILTIN, isBalancing); //show on build led
+    digitalWrite(LED_BUILTIN, isBalancing);                         // show on build led
     Serial.print(F("Load resistor:"));
     Serial.println(isBalancing ? " ON" : " OFF");
 }
@@ -249,5 +288,5 @@ String Balancer::getCellVoltageString(byte index)
 
 String Balancer::getDifferenceString()
 {
-    return String((int)voltageDiff/10*10); // rounded to 10mV
+    return String((int)voltageDiff / 10 * 10); // rounded to 10mV
 }
