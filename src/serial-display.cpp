@@ -34,11 +34,12 @@ void serialPlusOledDelayed(char *s)
   serialPlusOled(s);
   delay(50);
 }
-
+byte refreshCounter = 0;  
 void displayBalancer()
 {
   if (balancer.getUpdateDisplay())
   {
+    refreshCounter++;
     balancer.setUpdateDisplay(false);
 
     const char emptyLine[] = "                                       ";
@@ -47,7 +48,14 @@ void displayBalancer()
     oled.setCursor(0, 0);
     oled.setFont(fixed_bold10x15);
 
-    oled.print(balancer.getState());
+    if (refreshCounter % 2 == 0)
+    {
+      oled.print(balancer.getState());
+    }
+    else
+    {
+      oled.print(balancer.getModeString());
+    }
     oled.println(emptyLine);
 
     oled.print(balancer.getCellVoltageString(0));
@@ -63,11 +71,12 @@ void displayBalancer()
     oled.print(balancer.getDifferenceString() + "mV ");
     oled.print("Load: ");
     oled.print(balancer.getBalancingMode());
-     oled.println(emptyLine);
+    oled.println(emptyLine);
 
     oled.print("timer: ");
     oled.print(balancer.getElapsedTimeString() + "/");
-    oled.print(balancer.getCycleTimeString() + "s");
+    oled.print(balancer.getCycleTimeString() + "s : ");
+    oled.print(refreshCounter);
     oled.print(emptyLine);
   }
 }
