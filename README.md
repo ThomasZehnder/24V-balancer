@@ -26,8 +26,8 @@ DC/DC converter 24V /5V galvanic separated
 |-----------|-----|----------
 | OFF | OFF | Voltage measurement
 | ON  | OFF | Balance
-| OFF | ON  | Discharge to 75%
-| ON  | ON  | Discharge to 50%
+| OFF | ON  | Discharge to 75% / 13.1V
+| ON  | ON  | Discharge to 50% / 13V
 
 ## Analog in
 
