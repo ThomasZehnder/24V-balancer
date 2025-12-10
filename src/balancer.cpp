@@ -83,7 +83,7 @@ void Balancer::cyclic()
 
     // reduce cycletime in case cell has lower voltage
     long localCycleTime;
-    if (voltageDiff<0)
+    if (voltageDiff < 0)
     {
         localCycleTime = 2; // 2s
     }
@@ -254,10 +254,24 @@ String Balancer::getState()
         status = F("IDLE");
         break;
     case STATE_DISCHARGE_0:
-        status = F("DISCHARGE 1");
+        if (isBalancing)
+        {
+            status = F("DISCHARGE 1");
+        }
+        else
+        {
+            status = F("MEASSURE 1");
+        }
         break;
     case STATE_DISCHARGE_1:
-        status = F("DISCHARGE 2");
+        if (isBalancing)
+        {
+            status = F("DISCHARGE 2");
+        }
+        else
+        {
+            status = F("MEASSURE 2");
+        }
         break;
     case STATE_MEASSURE_0:
         status = F("MEASSURE 1");
