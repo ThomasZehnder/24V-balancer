@@ -45,15 +45,15 @@ void Balancer::cyclic()
             Serial.println(F("State changed to STATE_MEASSURE_1"));
             break;
         case STATE_MEASSURE_1:
-            balanceState = STATE_DSICHARGE_0;
+            balanceState = STATE_DISCHARGE_0;
             setCellIndex(0);
-            Serial.println(F("State changed to STATE_DSICHARGE_0"));
+            Serial.println(F("State changed to STATE_DISCHARGE_0"));
             break;
-        case STATE_DSICHARGE_0:
+        case STATE_DISCHARGE_0:
             isBalancing = calculateBalanceNeeded(0, 1);
             break;
 
-        case STATE_DSICHARGE_1:
+        case STATE_DISCHARGE_1:
             isBalancing = calculateBalanceNeeded(1, 0);
             break;
 
@@ -101,16 +101,16 @@ void Balancer::cyclic()
         switch (balanceState)
         {
 
-        case STATE_DSICHARGE_0:
-            balanceState = STATE_DSICHARGE_1;
+        case STATE_DISCHARGE_0:
+            balanceState = STATE_DISCHARGE_1;
             setCellIndex(1);
-            Serial.println(F("State changed to STATE_DSICHARGE_1"));
+            Serial.println(F("State changed to STATE_DISCHARGE_1"));
             break;
 
-        case STATE_DSICHARGE_1:
-            balanceState = STATE_DSICHARGE_0;
+        case STATE_DISCHARGE_1:
+            balanceState = STATE_DISCHARGE_0;
             setCellIndex(0);
-            Serial.println(F("State changed to STATE_DSICHARGE_0"));
+            Serial.println(F("State changed to STATE_DISCHARGE_0"));
             break;
 
         default:
@@ -253,10 +253,10 @@ String Balancer::getState()
     case STATE_IDLE:
         status = F("IDLE");
         break;
-    case STATE_DSICHARGE_0:
+    case STATE_DISCHARGE_0:
         status = F("DISCHARGE 1");
         break;
-    case STATE_DSICHARGE_1:
+    case STATE_DISCHARGE_1:
         status = F("DISCHARGE 2");
         break;
     case STATE_MEASSURE_0:
