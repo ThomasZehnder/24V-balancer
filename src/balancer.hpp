@@ -44,7 +44,8 @@ private:
 
     BalancerMode readModeInputs();
 
-    bool voltagesUpperLimit(float limitVoltage);    
+    bool voltagesUpperLimit(float limitVoltage);
+    float voltageLimit = 0.0f;
 
     bool updateDisplay = false; // only set when display should be updated
 
@@ -72,6 +73,7 @@ public:
     String getDifferenceString();
     String getCycleTimeString() { return (String(cycleTime)); };
     String getElapsedTimeString() { return (String(elapsedTime)); };
+    String getVoltageLimitString() { return String(voltageLimit, 2); };
 };
 
 extern Balancer balancer;

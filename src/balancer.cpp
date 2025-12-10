@@ -189,6 +189,7 @@ void Balancer::setCellIndex(byte index)
 }
 bool Balancer::voltagesUpperLimit(float limitVoltage)
 {
+    voltageLimit = limitVoltage; // store for oled display
     bool upperLimit = true;
     for (byte i = 0; i < NUMBER_OF_CELLS; i++)
     {

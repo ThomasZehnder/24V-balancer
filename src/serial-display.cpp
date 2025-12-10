@@ -78,5 +78,8 @@ void displayBalancer()
     oled.print(balancer.getCycleTimeString() + "s : ");
     oled.print(refreshCounter);
     oled.print(emptyLine);
+
+    oled.print("voltage limit: ");
+    oled.print(balancer.getVoltageLimitString() + "V"); 
   }
 }
