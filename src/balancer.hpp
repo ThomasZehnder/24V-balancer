@@ -23,8 +23,8 @@ class Balancer
         STATE_IDLE,
         STATE_MEASSURE_0,
         STATE_MEASSURE_1,
-        STATE_BALANCING_0,
-        STATE_BALANCING_1
+        STATE_DSICHARGE_0,
+        STATE_DSICHARGE_1
     };
 
 private:

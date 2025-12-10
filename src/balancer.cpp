@@ -45,15 +45,15 @@ void Balancer::cyclic()
             Serial.println(F("State changed to STATE_MEASSURE_1"));
             break;
         case STATE_MEASSURE_1:
-            balanceState = STATE_BALANCING_0;
+            balanceState = STATE_DSICHARGE_0;
             setCellIndex(0);
-            Serial.println(F("State changed to STATE_BALANCING_0"));
+            Serial.println(F("State changed to STATE_DSICHARGE_0"));
             break;
-        case STATE_BALANCING_0:
+        case STATE_DSICHARGE_0:
             isBalancing = calculateBalanceNeeded(0, 1);
             break;
 
-        case STATE_BALANCING_1:
+        case STATE_DSICHARGE_1:
             isBalancing = calculateBalanceNeeded(1, 0);
             break;
 
@@ -83,9 +83,9 @@ void Balancer::cyclic()
         setUpdateDisplay(true);
     }
 
-    // reduce cycletime in case of not balancing
+    // reduce cycletime in case cell has lower voltage
     long localCycleTime;
-    if (!isBalancing)
+    if (voltageDiff<0)
     {
         localCycleTime = 2; // 2s
     }
@@ -103,16 +103,16 @@ void Balancer::cyclic()
         switch (balanceState)
         {
 
-        case STATE_BALANCING_0:
-            balanceState = STATE_BALANCING_1;
+        case STATE_DSICHARGE_0:
+            balanceState = STATE_DSICHARGE_1;
             setCellIndex(1);
-            Serial.println(F("State changed to STATE_BALANCING_1"));
+            Serial.println(F("State changed to STATE_DSICHARGE_1"));
             break;
 
-        case STATE_BALANCING_1:
-            balanceState = STATE_BALANCING_0;
+        case STATE_DSICHARGE_1:
+            balanceState = STATE_DSICHARGE_0;
             setCellIndex(0);
-            Serial.println(F("State changed to STATE_BALANCING_0"));
+            Serial.println(F("State changed to STATE_DSICHARGE_0"));
             break;
 
         default:
@@ -255,11 +255,11 @@ String Balancer::getState()
     case STATE_IDLE:
         status = F("IDLE");
         break;
-    case STATE_BALANCING_0:
-        status = F("BALANCING 1");
+    case STATE_DSICHARGE_0:
+        status = F("DISCHARGE 1");
         break;
-    case STATE_BALANCING_1:
-        status = F("BALANCING 2");
+    case STATE_DSICHARGE_1:
+        status = F("DISCHARGE 2");
         break;
     case STATE_MEASSURE_0:
         status = F("MEASSURE 1");
